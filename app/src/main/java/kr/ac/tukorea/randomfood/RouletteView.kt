@@ -1,10 +1,7 @@
 package kr.ac.tukorea.randomfood
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
@@ -12,6 +9,7 @@ import android.view.animation.RotateAnimation
 import java.lang.Math.cos
 import java.lang.Math.sin
 import kotlin.collections.listOf
+
 
 class RouletteView @JvmOverloads constructor(
     context: Context,
@@ -58,6 +56,8 @@ class RouletteView @JvmOverloads constructor(
         val rectF = RectF(rectLeft, rectTop, rectRight.toFloat(), rectBottom)
 
         drawRoulette(canvas,rectF)
+
+
     }
 
     private fun drawRoulette(canvas:Canvas?, rectF:RectF){
@@ -92,7 +92,36 @@ class RouletteView @JvmOverloads constructor(
 
     }
 
-    fun rotateRoulette(toDegrees:Float,duration:Long){
+    private fun getRouletteRotateResult(degrees:Float):String{
+        val moveDegrees = degrees %360
+        val resultAngle = if(moveDegrees > 270) 360-moveDegrees + 270 else 270 - moveDegrees
+        for(i in 1..rouletteSize){
+            if(resultAngle < (260 / rouletteSize)*i){
+                if(i-1 >= rouletteData.size){
+                    return "empty"
+                }
+
+                return rouletteData[i-1]
+            }
+        }
+        return ""
+    }
+
+    fun rotateRoulette(toDegrees:Float,duration:Long,rotateListener: RotateListener?){
+
+        val animListener=object:Animation.AnimationListener{
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+                rotateListener?.onRotateStart()
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                rotateListener?.onRotateEnd((getRouletteRotateResult((toDegrees))))
+            }
+        }
+
         val rotateAnim = RotateAnimation(0f,toDegrees,
             Animation.RELATIVE_TO_SELF,0.5f,
             Animation.RELATIVE_TO_SELF, 0.5f
@@ -100,6 +129,7 @@ class RouletteView @JvmOverloads constructor(
 
         rotateAnim.duration = duration
         rotateAnim.fillAfter = true
+        rotateAnim.setAnimationListener(animListener)
 
         startAnimation(rotateAnim)
 

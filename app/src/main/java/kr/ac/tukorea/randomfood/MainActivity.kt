@@ -11,6 +11,17 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityMainBinding
 
+
+    private val rouletteListener = object : RotateListener {
+        override fun onRotateStart() {
+            binding.rotateResultTv.text = "Result : "
+        }
+
+        override fun onRotateEnd(result: String) {
+            binding.rotateResultTv.text = "Result : $result"
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -52,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun rotateRoulette(){
         val toDegrees = (2000..10000).random().toFloat()
-        binding.roulette.rotateRoulette(toDegrees,3000)
+        binding.roulette.rotateRoulette(toDegrees,3000,rouletteListener)
     }
 
 

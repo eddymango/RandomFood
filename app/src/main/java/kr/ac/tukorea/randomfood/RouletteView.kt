@@ -6,10 +6,9 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import java.lang.Math.cos
-import java.lang.Math.sin
 import kotlin.collections.listOf
-
+import kotlin.math.cos
+import kotlin.math.sin
 
 class RouletteView @JvmOverloads constructor(
     context: Context,
@@ -25,7 +24,12 @@ class RouletteView @JvmOverloads constructor(
     var rouletteData = mutableListOf<String>()
 
 
+    private var centerX = 0f
+    private var centerY = 0f
+
+
     init{
+
         strokePaint.apply{
             color = Color.BLACK
             style = Paint.Style.STROKE // 내부 비워진 원
@@ -48,15 +52,18 @@ class RouletteView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        val rectLeft = left.toFloat() + paddingLeft
-        val rectRight = right - paddingRight
-        val rectTop = height / 2f - rectRight / 2f + paddingTop
-        val rectBottom = height / 2f + rectRight / 2f - paddingRight
+        val rectLeft = left + paddingLeft + 20f
+        val rectRight = right - paddingRight - 20f
+        val rectTop = height / 2f - rectRight / 2f + paddingTop + 20f
+        val rectBottom = height / 2f + rectRight / 2f - paddingRight - 20f
 
-        val rectF = RectF(rectLeft, rectTop, rectRight.toFloat(), rectBottom)
+
+        val rectF = RectF(rectLeft, rectTop, rectRight, rectBottom)
+
+        centerX = (rectF.left + rectF.right) / 2f
+        centerY = (rectF.top + rectF.bottom) / 2f
 
         drawRoulette(canvas,rectF)
-
 
     }
 
@@ -66,8 +73,6 @@ class RouletteView @JvmOverloads constructor(
 
         if (rouletteSize in 2..8){
             val sweepAngle = 360f / rouletteSize.toFloat()
-            val centerX = (rectF.left + rectF.right)/2
-            val centerY = (rectF.top + rectF.bottom)/2
             val radius = (rectF.right - rectF.left)/2 *0.5
             val colors = listOf("#005b96","#7bc043", "#f37735","#fed766","#fe4a49", "#2ab7ca", "#e6e6ea", "#f6abb6")
 
@@ -79,9 +84,9 @@ class RouletteView @JvmOverloads constructor(
 
                 val medianAngle = (startAngle + sweepAngle / 2f)* Math.PI / 180f
                 val x = (centerX + (radius * cos(medianAngle))).toFloat()
-                val y = (centerY + (radius * sin(medianAngle))).toFloat()
+                val y = (centerY + (radius * sin(medianAngle))).toFloat()+20f
 
-                val text = if(i>rouletteData.size -1 ) "EMPTY" else rouletteData[i]
+                val text = if(i>rouletteData.size -1 ) "" else rouletteData[i]
                 canvas?.drawText(text,x,y,textPaint)
 
             }
@@ -96,7 +101,7 @@ class RouletteView @JvmOverloads constructor(
         val moveDegrees = degrees %360
         val resultAngle = if(moveDegrees > 270) 360-moveDegrees + 270 else 270 - moveDegrees
         for(i in 1..rouletteSize){
-            if(resultAngle < (260 / rouletteSize)*i){
+            if(resultAngle < (360 / rouletteSize)*i){
                 if(i-1 >= rouletteData.size){
                     return "empty"
                 }
@@ -119,6 +124,7 @@ class RouletteView @JvmOverloads constructor(
 
             override fun onAnimationEnd(animation: Animation?) {
                 rotateListener?.onRotateEnd((getRouletteRotateResult((toDegrees))))
+
             }
         }
 

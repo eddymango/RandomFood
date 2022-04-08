@@ -15,14 +15,16 @@ class Login : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.imageView.setOnClickListener {
-            Toast.makeText(this,"이미지 클릭",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"환영합니다.",Toast.LENGTH_SHORT).show()
             val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
         }
+/*
 
         binding.btn.setOnClickListener {
             Toast.makeText(this,"클릭 리스너 됩니다,",Toast.LENGTH_SHORT).show()
         }
+*/
 
 
 

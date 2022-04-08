@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     private val rouletteListener = object : RotateListener {
         override fun onRotateStart() {
-            binding.rotateResultTv.text = "Result : "
+            binding.rotateResultTv.text = "Result :  "
         }
 
         override fun onRotateEnd(result: String) {
@@ -44,20 +44,50 @@ class MainActivity : AppCompatActivity() {
         binding.btnMinus.setOnClickListener {
             var curSize = binding.roulette.rouletteSize
             if (curSize<3 ){
-                Toast.makeText(this,"줄일 수 없습니다.",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"최소 크기입니다.",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             else{
-                curSize-=
-                binding.roulette.rouletteSize--
-                binding.roulette.invalidate()
+                if(binding.roulette.rouletteData.lastIndex != -1) {
+                    if(binding.roulette.rouletteData.size == binding.roulette.rouletteSize){
+                        binding.roulette.rouletteData.removeAt(binding.roulette.rouletteData.lastIndex)
+                        curSize -=
+                            binding.roulette.rouletteSize--
+                        binding.roulette.invalidate()
+                    }
+                    else{
+                        curSize -=
+                            binding.roulette.rouletteSize--
+                        binding.roulette.invalidate()
+                    }
+                }
+                else{
+                    curSize -=
+                        binding.roulette.rouletteSize--
+                    binding.roulette.invalidate()
 
+                }
             } }
 
         binding.editBtn.setOnClickListener{
-            binding.roulette.rouletteData.add(binding.editMenu.text.toString())
-            binding.roulette.invalidate()
+            if(binding.roulette.rouletteData.size > binding.roulette.rouletteSize-1){ //
+                Toast.makeText(this,"넣을 수 없습니다.",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
 
+            }
+            else{
+                if(binding.roulette.rouletteData.size>binding.roulette.rouletteSize-1){
+                    Toast.makeText(this,"넣을 수 없습니다.",Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+
+                }
+                //글자수 제한해야함
+                else{
+                    binding.roulette.rouletteData.add(binding.editMenu.text.toString())
+                    binding.roulette.invalidate()
+                }
+
+            }
         }
 
     }

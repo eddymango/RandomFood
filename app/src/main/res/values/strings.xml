@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">RandomFood</string>
     <string name="deleteError">삭제할 수 없습니다.</string>
+    <string name="title_activity_map">MapActivity</string>
 </resources>

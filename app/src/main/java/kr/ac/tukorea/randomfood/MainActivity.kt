@@ -3,6 +3,7 @@ package kr.ac.tukorea.randomfood
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,12 +18,13 @@ class MainActivity : AppCompatActivity() {
 
     private val rouletteListener = object : RotateListener {
         override fun onRotateStart() {
-            binding.rotateResultTv.text = "Result :  "
+            binding.rotateResultTv.text = "Result : "
         }
 
         override fun onRotateEnd(result: String) {
             binding.rotateResultTv.text = "Result : $result"
             roulresult = result
+            binding.mapBtn.visibility=VISIBLE
         }
     }
 
@@ -39,11 +41,9 @@ class MainActivity : AppCompatActivity() {
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")
                 startActivity(mapIntent)
-
          /*       val intent = Intent(this,MapActivity::class.java)
                 intent.putExtra("foodAddress",roulresult)
                 startActivity(intent)*/
-
             }
             dlg.setNegativeButton("취소",null)
             dlg.show()

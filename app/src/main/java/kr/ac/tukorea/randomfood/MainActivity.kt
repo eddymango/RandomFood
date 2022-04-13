@@ -1,7 +1,10 @@
 package kr.ac.tukorea.randomfood
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import kr.ac.tukorea.randomfood.databinding.ActivityMainBinding
@@ -10,7 +13,7 @@ import kr.ac.tukorea.randomfood.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityMainBinding
-
+    private lateinit var roulresult:String
 
     private val rouletteListener = object : RotateListener {
         override fun onRotateStart() {
@@ -19,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onRotateEnd(result: String) {
             binding.rotateResultTv.text = "Result : $result"
+            roulresult = result
         }
     }
 
@@ -26,6 +30,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.activity = this
+
+        binding.mapBtn.setOnClickListener {
+            var dlg = AlertDialog.Builder(this@MainActivity)
+            dlg.setTitle("내 주변 음식점 찾기 기능").setMessage("$roulresult 음식점을 검색하려면 확인을 누르세요")
+            dlg.setPositiveButton("검색"){ dialog,which ->
+                val gmmIntentUri = Uri.parse("geo:0,0?q=$roulresult")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+
+         /*       val intent = Intent(this,MapActivity::class.java)
+                intent.putExtra("foodAddress",roulresult)
+                startActivity(intent)*/
+
+            }
+            dlg.setNegativeButton("취소",null)
+            dlg.show()
+        }
 
         binding.btnPlus.setOnClickListener{
             var curSize = binding.roulette.rouletteSize

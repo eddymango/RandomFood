@@ -97,7 +97,7 @@ class RouletteView @JvmOverloads constructor(
 
     }
 
-    private fun getRouletteRotateResult(degrees:Float):String{
+    fun getRouletteRotateResult(degrees:Float):String{
         val moveDegrees = degrees %360
         val resultAngle = if(moveDegrees > 270) 360-moveDegrees + 270 else 270 - moveDegrees
         for(i in 1..rouletteSize){

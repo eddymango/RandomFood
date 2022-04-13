@@ -17,6 +17,7 @@ class Login : AppCompatActivity() {
         binding.imageView.setOnClickListener {
             Toast.makeText(this,"환영합니다.",Toast.LENGTH_SHORT).show()
             val intent = Intent(this,MainActivity::class.java)
+
             startActivity(intent)
         }
 /*

@@ -13,8 +13,8 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:background="@drawable/food_menu">
+        android:background="@drawable/food_menu"
+        tools:context=".MainActivity">
 
         <kr.ac.tukorea.randomfood.RouletteView
             android:id="@+id/roulette"
@@ -33,16 +33,15 @@
             android:id="@+id/rotateBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
             android:layout_marginBottom="16dp"
+            android:background="#000000"
             android:onClick="@{() -> activity.rotateRoulette()}"
             android:text="돌리기"
-            android:background="#000000"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editBtn" />
+            app:layout_constraintEnd_toStartOf="@+id/editBtn"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/editMenu"
@@ -51,30 +50,34 @@
             android:layout_marginBottom="16dp"
             android:background="#000000"
             android:ems="10"
-            android:hint="여기를 눌러 음식 카테고리를 입력하세요"
-            android:inputType="textPersonName"
-            android:textColorHint="@color/white"
-            android:textColor="@color/white"
             android:gravity="center"
+            android:hint="여기를 눌러 메뉴를 입력하세요"
+            android:inputType="textPersonName"
+            android:maxLength="6"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/editBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/roulette"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_chainStyle="spread" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/editBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="48dp"
             android:layout_marginBottom="16dp"
             android:background="#000000"
             android:text="입력하기"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/rotateBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/resetBtn"
+            app:layout_constraintStart_toEndOf="@+id/rotateBtn"
             app:layout_constraintTop_toBottomOf="@+id/editMenu" />
 
         <ImageView
@@ -99,21 +102,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/btn_plus" />
 
-        <TextView
-            android:id="@+id/rotateResultTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="66dp"
-            android:text="Result : "
-            android:textColor="#E91E63"
-            android:background="@color/white"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toStartOf="@+id/btnPlus"
-            app:layout_constraintHorizontal_bias="0.413"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="55dp"
@@ -124,18 +112,22 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/arrow_down_float" />
 
-        <Button
-            android:id="@+id/mapBtn"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/resetBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="160dp"
-            android:text="주변 음식점 검색하기"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="16dp"
+            android:background="#000000"
+            android:text="메뉴 삭제"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.216"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rotateResultTv"
-            android:visibility="invisible"/>
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/editBtn"
+            app:layout_constraintTop_toBottomOf="@+id/editMenu"
+            app:layout_constraintVertical_bias="1.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

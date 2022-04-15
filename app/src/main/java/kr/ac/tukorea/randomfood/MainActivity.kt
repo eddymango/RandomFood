@@ -3,6 +3,7 @@ package kr.ac.tukorea.randomfood
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -18,13 +19,40 @@ class MainActivity : AppCompatActivity() {
 
     private val rouletteListener = object : RotateListener {
         override fun onRotateStart() {
-            binding.rotateResultTv.text = "Result : "
+            binding.rotateBtn.visibility= INVISIBLE
+            binding.btnMinus.visibility = INVISIBLE
+            binding.btnPlus.visibility = INVISIBLE
+            binding.editMenu.visibility = INVISIBLE
+            binding.resetBtn.visibility = INVISIBLE
+            binding.editBtn.visibility = INVISIBLE
         }
 
         override fun onRotateEnd(result: String) {
-            binding.rotateResultTv.text = "Result : $result"
             roulresult = result
-            binding.mapBtn.visibility=VISIBLE
+            var dlg = AlertDialog.Builder(this@MainActivity)
+            dlg.setTitle("결과 : $roulresult").setMessage("내 주변 $roulresult 음식점 검색하기")
+            dlg.setPositiveButton("검색"){ dialog,which ->
+                val gmmIntentUri = Uri.parse("geo:0,0?q=$roulresult")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+                //val intent = Intent(this,MapActivity::class.java)
+                //intent.putExtra("foodAddress",roulresult)
+                //startActivity(intent)
+            }
+            dlg.setNegativeButton("취소",null)
+            dlg.show()
+
+            binding.rotateBtn.visibility= VISIBLE
+            binding.btnMinus.visibility = VISIBLE
+            binding.btnPlus.visibility = VISIBLE
+            binding.editMenu.visibility = VISIBLE
+            binding.resetBtn.visibility = VISIBLE
+            binding.editBtn.visibility = VISIBLE
+
+
+
+
         }
     }
 
@@ -33,22 +61,15 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.activity = this
 
-        binding.mapBtn.setOnClickListener {
-            var dlg = AlertDialog.Builder(this@MainActivity)
-            dlg.setTitle("내 주변 음식점 찾기 기능").setMessage("$roulresult 음식점을 검색하려면 확인을 누르세요")
-            dlg.setPositiveButton("검색"){ dialog,which ->
-                val gmmIntentUri = Uri.parse("geo:0,0?q=$roulresult")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                startActivity(mapIntent)
-         /*       val intent = Intent(this,MapActivity::class.java)
-                intent.putExtra("foodAddress",roulresult)
-                startActivity(intent)*/
+        binding.resetBtn.setOnClickListener{
+            if (binding.roulette.rouletteData.size<1){
+                return@setOnClickListener
             }
-            dlg.setNegativeButton("취소",null)
-            dlg.show()
+            else{
+                binding.roulette.rouletteData.removeAt(binding.roulette.rouletteData.lastIndex)
+                binding.roulette.invalidate()
+            }
         }
-
         binding.btnPlus.setOnClickListener{
             var curSize = binding.roulette.rouletteSize
             if ((curSize<2 )|| (curSize>7)){

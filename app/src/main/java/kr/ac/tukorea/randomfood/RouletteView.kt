@@ -103,7 +103,7 @@ class RouletteView @JvmOverloads constructor(
         for(i in 1..rouletteSize){
             if(resultAngle < (360 / rouletteSize)*i){
                 if(i-1 >= rouletteData.size){
-                    return "empty"
+                    return ""
                 }
 
                 return rouletteData[i-1]

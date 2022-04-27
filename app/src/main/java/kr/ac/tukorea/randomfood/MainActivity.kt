@@ -29,19 +29,29 @@ class MainActivity : AppCompatActivity() {
 
         override fun onRotateEnd(result: String) {
             roulresult = result
-            var dlg = AlertDialog.Builder(this@MainActivity)
-            dlg.setTitle("결과 : $roulresult").setMessage("내 주변 $roulresult 음식점 검색하기")
-            dlg.setPositiveButton("검색"){ dialog,which ->
-                val gmmIntentUri = Uri.parse("geo:0,0?q=$roulresult")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                startActivity(mapIntent)
-                //val intent = Intent(this,MapActivity::class.java)
-                //intent.putExtra("foodAddress",roulresult)
-                //startActivity(intent)
+            if (roulresult == ""){
+                var dlg = AlertDialog.Builder(this@MainActivity)
+                dlg.setTitle("결과가 없습니다.").setMessage("룰렛을 다시 채우고 돌려주세요")
+                dlg.setPositiveButton("다시 입력하기",null)
+                dlg.show()
+
             }
-            dlg.setNegativeButton("취소",null)
-            dlg.show()
+            else{
+                var dlg = AlertDialog.Builder(this@MainActivity)
+                dlg.setTitle("결과 : $roulresult").setMessage("내 주변 $roulresult 음식점 검색하기")
+                dlg.setPositiveButton("검색"){ dialog,which ->
+                    val gmmIntentUri = Uri.parse("geo:0,0?q=$roulresult")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    startActivity(mapIntent)
+                    //val intent = Intent(this,MapActivity::class.java)
+                    //intent.putExtra("foodAddress",roulresult)
+                    //startActivity(intent)
+                }
+                dlg.setNegativeButton("취소",null)
+                dlg.show()
+            }
+
 
             binding.rotateBtn.visibility= VISIBLE
             binding.btnMinus.visibility = VISIBLE

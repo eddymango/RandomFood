@@ -40,13 +40,13 @@ class MainActivity : AppCompatActivity() {
                 var dlg = AlertDialog.Builder(this@MainActivity)
                 dlg.setTitle("결과 : $roulresult").setMessage("내 주변 $roulresult 음식점 검색하기")
                 dlg.setPositiveButton("검색"){ dialog,which ->
-                    val gmmIntentUri = Uri.parse("geo:0,0?q=$roulresult")
-                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                    mapIntent.setPackage("com.google.android.apps.maps")
-                    startActivity(mapIntent)
-                    //val intent = Intent(this,MapActivity::class.java)
-                    //intent.putExtra("foodAddress",roulresult)
-                    //startActivity(intent)
+                    //val gmmIntentUri = Uri.parse("geo:0,0?q=$roulresult")
+                    //val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    //mapIntent.setPackage("com.google.android.apps.maps")
+                    //startActivity(mapIntent)
+                    val intent = Intent(this@MainActivity ,MapActivity::class.java)
+                    intent.putExtra("foodAddress",roulresult)
+                    startActivity(intent)
                 }
                 dlg.setNegativeButton("취소",null)
                 dlg.show()
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+            binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.activity = this
 
         binding.resetBtn.setOnClickListener{
